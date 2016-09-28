@@ -1,11 +1,12 @@
 BulletinBoard.controller("PostsCtrl", ["$scope", "postsService", "commentsService", "_", function($scope, postsService, commentsService, _) {
-  
+
+
   postsService.getPost().then(function(response) {
     $scope.post = response.data["1"];
+    $scope.allComments = commentsService.getAllComments();
     $scope.postComments = commentsService.getPostComments($scope.post);
   })
 
-  $scope.allComments = commentsService.getAllComments();
   $scope.comment = {}
 
 
@@ -14,6 +15,19 @@ BulletinBoard.controller("PostsCtrl", ["$scope", "postsService", "commentsServic
     commentsService.addComment(comment)
     $scope.post.comments.push(comment.id);
     $scope.postComments = commentsService.getPostComments($scope.post);
+    $scope.comment = {}
   }
 
+  $scope.upVote = function(id) {
+
+    $scope.postComments.filter(function(el) {
+      return el.id === id
+    })[0].score++;
+  }
+
+  $scope.downVote = function(id) {
+     $scope.postComments.filter(function(el) {
+      return el.id === id
+    })[0].score--;
+  }
 }])

@@ -48,7 +48,7 @@
         <h2>{{ comment.author }}</h2>
         <p>{{ comment.date | date}}</p>
         <p>{{ comment.text }}</p>
-        <p>{{ comment.score }}</p>
+        <p><span ng-click="upVote(comment.id)"> ^ </span><span ng-click="downVote(comment.id)"> v </span>{{ comment.score }}</p>
       </div>
     </div>
 

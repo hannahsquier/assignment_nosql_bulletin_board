@@ -18,7 +18,7 @@ BulletinBoard.factory("commentsService", ['$http', function($http) {
         return parseInt(el)
     })
     return _.max(integerArray);
-  };  
+  };
 
   var _populateComments = function() {
     return $http({
@@ -30,20 +30,18 @@ BulletinBoard.factory("commentsService", ['$http', function($http) {
   var _postComments = [];
 
   var getPostComments = function(post) {
-    if (_postComments.length) {
-      return _postComments
-    } else {
-      _populateComments().then(function() {
-        var postComments = [];
-        for(var commentID in _comments) {
-          if(post.comments.includes(parseInt(commentID))) {
-            postComments.push(_comments[commentID])
-          }
+
+    _populateComments().then(function() {
+      var postComments = [];
+      for(var commentID in _comments) {
+        if(post.comments.includes(parseInt(commentID))) {
+          postComments.push(_comments[commentID])
         }
-        return  _postComments = postComments;  
-      })
-      return _postComments;
-    }
+      }
+      return  angular.copy(postComments, _postComments);
+    })
+    return _postComments;
+
   }
 
 
@@ -53,6 +51,7 @@ BulletinBoard.factory("commentsService", ['$http', function($http) {
     comment.date = JSON.stringify(new Date());
     comment.score = 0;
     _comments[String(comment.id)] = comment;
+    console.log(_comments)
   }
 
   var _postComments;
